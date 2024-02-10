@@ -1,59 +1,80 @@
 #include "DisneyCharacter.h"
-#include <iostream>
+/*  -- Method Header Comment
+    Name	: DisneyCharacter -- CONSTRUCTOR
+    Purpose : to instantiate a new DisneyCharacter object - given a set of attribute values
+    Inputs	:	newName			String		name of the DisneyCharacter
+                newBreed		String		breed of the dog
+                newHairLength	int			hairless, short, medium, long
+                newSize			int			Toy, Small, Medium, Large
+    Outputs	:	NONE
+    Returns	:	Nothing
+*/
 
 // Constructor with all data members
-DisneyCharacter::DisneyCharacter(const string& name, const string& creationDate, int numMovies, char whichPark)
-    : name(name), creationDate(creationDate), numMovies(numMovies) {
+DisneyCharacter::DisneyCharacter(const char* name, const char* creationDate, int numMovies, char whichPark): numMovies(numMovies), whichPark(whichPark)
+{   
     // Truncate name if longer than 50 characters
-    if (name.length() > 50)
-        this->name = name.substr(0, 46) + " ...";
-    // Validate whichPark and set to 'N' if invalid
-    if (whichPark != 'M' && whichPark != 'S' && whichPark != 'A' && whichPark != 'E' && whichPark != 'C' && whichPark != 'N')
+    strncpy(this->name, name, 50);
+    this->name[50] = '\0';
+   
+    strncpy(this->creationDate, creationDate, 10);
+    this->creationDate[10] = '\0';
+   
+    // Ensure whichPark is valid, mark character as not placed if invalid
+    if (whichPark != 'M' && whichPark != 'S' && whichPark != 'A' && whichPark != 'E' && whichPark 
+        != 'C' && whichPark != 'N') 
+    {
         this->whichPark = 'N';
-    else
-        this->whichPark = whichPark;
-    // Ensure numMovies is non-negative
-    if (numMovies < 0)
-        this->numMovies = 0;
+    }
 }
 
 // Constructor with default values for numMovies and whichPark
-DisneyCharacter::DisneyCharacter(const string& name, const string& creationDate)
+DisneyCharacter::DisneyCharacter(const char* name, const char* creationDate)
     : DisneyCharacter(name, creationDate, 0, 'N') {}
 
 // Destructor
-DisneyCharacter::~DisneyCharacter() {
-    cout << name << " destroyed." << endl;
+DisneyCharacter::~DisneyCharacter()
+{
+    printf("%s destroyed.\n", name);
 }
 
 // Accessors
-string DisneyCharacter::getName() const {
+char* DisneyCharacter::getName(void) 
+{
     return name;
 }
 
-string DisneyCharacter::getCreationDate() const {
+char* DisneyCharacter::getCreationDate(void) 
+{
     return creationDate;
 }
 
-int DisneyCharacter::getNumMovies() const {
+int DisneyCharacter::getNumMovies() 
+{
     return numMovies;
 }
 
-char DisneyCharacter::getWhichPark() const {
+char DisneyCharacter::getWhichPark() 
+{
     return whichPark;
 }
 
 // Mutators
-bool DisneyCharacter::setNumMovies(int numMovies) {
-    if (numMovies >= 0) {
+bool DisneyCharacter::setNumMovies(int numMovies) 
+{
+    if (numMovies >= 0) 
+    {
         this->numMovies = numMovies;
         return true;
     }
     return false;
 }
 
-bool DisneyCharacter::setWhichPark(char whichPark) {
-    if (whichPark == 'M' || whichPark == 'S' || whichPark == 'A' || whichPark == 'E' || whichPark == 'C' || whichPark == 'N') {
+bool DisneyCharacter::setWhichPark(char whichPark) 
+{
+    if (whichPark == 'M' || whichPark == 'S' || whichPark == 'A' 
+        || whichPark == 'E' || whichPark == 'C' || whichPark == 'N') 
+    {
         this->whichPark = whichPark;
         return true;
     }
@@ -61,21 +82,24 @@ bool DisneyCharacter::setWhichPark(char whichPark) {
 }
 
 // Public methods
-void DisneyCharacter::ShowInfo() const {
-    cout << "Name: " << name << endl;
-    cout << "Creation Date: " << creationDate << endl;
-    cout << "Number of Movies: " << numMovies << endl;
-    cout << "Which Park: " << whichPark << endl;
+void DisneyCharacter::ShowInfo() 
+{
+    printf("Name: %s\n", name);
+    printf("Creation Date: %s\n", creationDate);
+    printf("Number of Movies: %d\n", numMovies);
+    printf("Which Park: %c\n\n", whichPark);
 }
 
-bool DisneyCharacter::PlaceCharacter(char whichPark) {
-    if (whichPark == 'M' || whichPark == 'S' || whichPark == 'A' || whichPark == 'E' || whichPark == 'C' || whichPark == 'N') {
-        this->whichPark = whichPark;
+bool DisneyCharacter::PlaceCharacter(char whichPark) 
+{
+    if (setWhichPark(whichPark)) 
+    {
         return true;
     }
     return false;
 }
 
-void DisneyCharacter::SameMovies(DisneyCharacter& anotherCharacter) {
+void DisneyCharacter::SameMovies(DisneyCharacter& anotherCharacter) 
+{
     numMovies = anotherCharacter.getNumMovies();
 }
